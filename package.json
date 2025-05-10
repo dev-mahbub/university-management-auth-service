@@ -15,7 +15,13 @@
   "author": "Mahbub Hasan",
   "license": "ISC",
   "lint-staged": {
-    "src/**/*.ts": "yarn lint-prettier"
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,js,jsx}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
     "@eslint/js": "^9.23.0",
@@ -38,6 +44,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "mongoose": "^8.13.1"
+    "mongoose": "^8.13.1",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
   }
 }
