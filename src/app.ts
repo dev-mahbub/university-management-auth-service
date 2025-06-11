@@ -1,7 +1,7 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import GlobalErrorHandler from './app/middlewares/globalErrorHandler';
-import { UserRoutes } from './app/modules/user.route';
+import { UserRoutes } from './app/modules/User/user.route';
 const app: Application = express();
 // const port = 3000;
 
