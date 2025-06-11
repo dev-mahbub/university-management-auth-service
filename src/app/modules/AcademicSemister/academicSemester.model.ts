@@ -41,7 +41,7 @@ const academiSemesterSchema = new Schema<IAcademicSemester>(
   },
 );
 
-export const AcademicSemister = model<
+export const AcademicSemester = model<
   IAcademicSemester,
   IAcademicSemesterModel
 >('AcademiSemester', academiSemesterSchema);

@@ -1,0 +1,1 @@
+Wed Jun 11 2025 21 : 37 : 12 [MH] error: AcademiSemester validation failed: endMonth: Path `endMonth` is required., startMonth: Path `startMonth` is required., code: Path `code` is required., year: Path `year` is required., title: Path `title` is required.
