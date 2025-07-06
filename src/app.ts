@@ -19,7 +19,7 @@ app.use('/api/v1/', routes);
 //error handling
 // //Test
 // app.get('/', async (req: Request, res: Response, next: NextFunction) => {
-//   throw new Error('Testing Error logger')
+//   throw new Error('Testing Error logger')f
 // })
 
 //global error handler
