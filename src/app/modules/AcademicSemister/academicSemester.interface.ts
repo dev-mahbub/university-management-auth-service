@@ -19,10 +19,29 @@ export type IAcademicSemesterCodes = '01' | '02' | '03';
 
 export type IAcademicSemester = {
   title: IAcademicSemesterTitles;
-  year: number;
+  year: string;
   code: IAcademicSemesterCodes;
   startMonth: IAcademicSemesterMonth;
   endMonth: IAcademicSemesterMonth;
 };
 
 export type IAcademicSemesterModel = Model<IAcademicSemester>;
+
+// export type IAcademicSemesterFilters = {
+//   searchTerm: string;
+// };
+
+export type IAcademicSemesterFilters = {
+  searchTerm?: string;
+  title?: string;
+  code?: string;
+  year?: string;
+};
+
+export const academicSemesterSearchableFields = ['title', 'code', 'year'];
+export const academicSemesterFilterableFields = [
+  'searchTerm',
+  'title',
+  'code',
+  'year',
+];
