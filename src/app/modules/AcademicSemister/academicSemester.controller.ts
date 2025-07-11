@@ -10,6 +10,7 @@ import {
   IAcademicSemester,
 } from './academicSemester.interface';
 
+//create data
 const createSemester = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { ...academiSemesterData } = req.body;
@@ -26,6 +27,7 @@ const createSemester = catchAsync(
   },
 );
 
+//read single data
 const getSingleSemester = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
@@ -42,23 +44,7 @@ const getSingleSemester = catchAsync(
   },
 );
 
-// const createSemester = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const { ...academiSemesterData } = req.body;
-//     const result =
-//       await AcademicSemesterService.createSemester(academiSemesterData);
-
-//     sendResponse(res, {
-//       statusCode: status.OK,
-//       success: true,
-//       message: 'Academic Semester Created Successfully',
-//       data: result,
-//     });
-
-//     next();
-//   },
-// );
-
+//read all data
 const getAllSemesters = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const filters = pick(req.query, academicSemesterFilterableFields);
@@ -81,8 +67,29 @@ const getAllSemesters = catchAsync(
   },
 );
 
+//update semester
+const updateSemester = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    const updatedData = req.body;
+    const result = await AcademicSemesterService.updateSemester(
+      id,
+      updatedData,
+    );
+
+    sendResponse<IAcademicSemester>(res, {
+      statusCode: status.OK,
+      success: true,
+      message: 'Semester updated successfully !',
+      data: result,
+    });
+    next();
+  },
+);
+
 export const AcademicSemesterController = {
   createSemester,
   getSingleSemester,
   getAllSemesters,
+  updateSemester,
 };
