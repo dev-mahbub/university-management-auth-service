@@ -12,6 +12,7 @@ import { IGenericResponse } from '../../../interfaces/common';
 import { paginationHelpers } from '../../../helpers/paginationHelpers';
 import { SortOrder } from 'mongoose';
 
+//create semesters
 const createSemester = async (
   payload: IAcademicSemester,
 ): Promise<IAcademicSemester> => {
@@ -22,6 +23,15 @@ const createSemester = async (
   return result;
 };
 
+// get single semester
+const getSingleSemester = async (
+  id: string,
+): Promise<IAcademicSemester | null> => {
+  const result = await AcademicSemester.findById(id);
+  return result;
+};
+
+//get all semesters
 const getAllSemesters = async (
   filters: IAcademicSemesterFilters,
   paginationOptions: IPaginationOptions,
@@ -85,7 +95,10 @@ const getAllSemesters = async (
     sortConditions[sortBy] = sortOrder;
   }
 
-  const result = await AcademicSemester.find({ $and: andConditions })
+  const whereConditions =
+    andConditions.length > 0 ? { $and: andConditions } : {};
+
+  const result = await AcademicSemester.find(whereConditions)
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);
@@ -104,5 +117,6 @@ const getAllSemesters = async (
 
 export const AcademicSemesterService = {
   createSemester,
+  getSingleSemester,
   getAllSemesters,
 };
