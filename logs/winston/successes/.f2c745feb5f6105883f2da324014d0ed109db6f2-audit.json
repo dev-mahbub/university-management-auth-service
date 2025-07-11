@@ -134,6 +134,16 @@
             "date": 1752206439414,
             "name": "C:\\Projects\\university-management-auth-service\\logs\\winston\\successes\\MH-2025-11-07-10-success.log",
             "hash": "af5ffdc1914126c0e55c2c5461654c82fc0e2a223495d9d3fb43a1c4a7665a1e"
+        },
+        {
+            "date": 1752241197215,
+            "name": "C:\\Projects\\university-management-auth-service\\logs\\winston\\successes\\MH-2025-11-07-19-success.log",
+            "hash": "65456ee34420818d9691b1ecb05b8604c499c659e6b86ef1b4b11352d29f1e92"
+        },
+        {
+            "date": 1752242402770,
+            "name": "C:\\Projects\\university-management-auth-service\\logs\\winston\\successes\\MH-2025-11-07-20-success.log",
+            "hash": "cb47d1c6776deef8140ea6fca1b58fb3725e3ac8f9ccf720d1ab7bf636ee8dfb"
         }
     ],
     "hashType": "sha256"
