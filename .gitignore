@@ -1,3 +1,5 @@
 node_modules
 .env
-logs/winston
+
+logs/winston/successes/*
+logs/winston/errors/*
