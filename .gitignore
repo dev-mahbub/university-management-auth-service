@@ -1,5 +1,10 @@
 node_modules
 .env
 
+# Ignore files inside these folders
 logs/winston/successes/*
 logs/winston/errors/*
+
+# But allow .gitkeep to be committed
+!logs/winston/successes/.gitkeep
+!logs/winston/errors/.gitkeep
