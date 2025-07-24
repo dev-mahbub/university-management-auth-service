@@ -1,49 +1,45 @@
-import { model, Schema } from 'mongoose';
-import {
-  IAcademicSemesterModel,
-  IAcademicSemester,
-} from './academicSemester.interface';
+import mongoose, { model } from 'mongoose';
 import {
   AcademicSemesterCodes,
   AcademicSemesterMonth,
-  AcademicSemesterTitles,
+  AcademicSemesterTitle,
 } from './academicSemester.constants';
+import {
+  IAcademicSemester,
+  IAcademicSemesterModel,
+} from './academicSemester.interface';
 import ApiError from '../../../errors/ApiError';
 import status from 'http-status';
+const { Schema } = mongoose;
 
-const academiSemesterSchema = new Schema<IAcademicSemester>(
-  {
-    title: {
-      type: String,
-      required: true,
-      enum: AcademicSemesterTitles,
-    },
-    year: {
-      type: String,
-      required: true,
-    },
-    code: {
-      type: String,
-      required: true,
-      enum: AcademicSemesterCodes,
-    },
-    startMonth: {
-      type: String,
-      required: true,
-      enum: AcademicSemesterMonth,
-    },
-    endMonth: {
-      type: String,
-      required: true,
-      enum: AcademicSemesterMonth,
-    },
+const academicSemesterSchema = new Schema<IAcademicSemester>({
+  title: {
+    type: String,
+    required: true,
+    enum: AcademicSemesterTitle,
   },
-  {
-    timestamps: true,
+  year: {
+    type: String,
+    required: true,
   },
-);
+  code: {
+    type: String,
+    required: true,
+    enum: AcademicSemesterCodes,
+  },
+  startMonth: {
+    type: String,
+    required: true,
+    enum: AcademicSemesterMonth,
+  },
+  endMonth: {
+    type: String,
+    required: true,
+    enum: AcademicSemesterMonth,
+  },
+});
 
-academiSemesterSchema.pre('save', async function (next) {
+academicSemesterSchema.pre('save', async function (next) {
   const isExist = await AcademicSemester.findOne({
     title: this.title,
     year: this.year,
@@ -57,4 +53,4 @@ academiSemesterSchema.pre('save', async function (next) {
 export const AcademicSemester = model<
   IAcademicSemester,
   IAcademicSemesterModel
->('AcademiSemester', academiSemesterSchema);
+>('AcademicSemester', academicSemesterSchema);
