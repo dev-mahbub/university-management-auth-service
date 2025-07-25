@@ -3,6 +3,7 @@ import { User } from './user.model';
 import { generatedUserId } from './user.utils';
 import config from '../../../config';
 import ApiError from '../../../errors/ApiError';
+import status from 'http-status';
 
 const createUsers = async (user: IUser): Promise<IUser | null> => {
   //auto generated incereamental id
@@ -15,8 +16,8 @@ const createUsers = async (user: IUser): Promise<IUser | null> => {
 
   const createdUsers = await User.create(user);
 
-  if (!createUsers) {
-    throw new ApiError(400, 'Failed to create user');
+  if (!createdUsers) {
+    throw new ApiError(status.BAD_REQUEST, 'Failed to create user');
   }
   return createdUsers;
 };
