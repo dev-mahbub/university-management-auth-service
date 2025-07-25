@@ -1,10 +1,11 @@
-import * as z from 'zod';
-import { AcademicSemesterTitles } from '../AcademicSemister copy/academicSemester.constants';
+import { z } from 'zod';
 import {
   AcademicSemesterCodes,
   AcademicSemesterMonth,
+  AcademicSemesterTitles,
 } from './academicSemester.constants';
 
+//create validation
 const createAcademicSemesterZodSchema = z.object({
   body: z.object({
     title: z.enum([...AcademicSemesterTitles] as [string, ...string[]], {
@@ -13,9 +14,7 @@ const createAcademicSemesterZodSchema = z.object({
     year: z.string({
       required_error: 'Year is required',
     }),
-    code: z.enum([...AcademicSemesterCodes] as [string, ...string[]], {
-      required_error: 'Code is required',
-    }),
+    code: z.enum([...AcademicSemesterCodes] as [string, ...string[]]),
     startMonth: z.enum([...AcademicSemesterMonth] as [string, ...string[]], {
       required_error: 'Start month is required',
     }),
@@ -25,6 +24,7 @@ const createAcademicSemesterZodSchema = z.object({
   }),
 });
 
+//update validation
 const updateAcademicSemesterZodSchema = z
   .object({
     body: z.object({
@@ -38,11 +38,7 @@ const updateAcademicSemesterZodSchema = z
           required_error: 'Year is required',
         })
         .optional(),
-      code: z
-        .enum([...AcademicSemesterCodes] as [string, ...string[]], {
-          required_error: 'Code is required',
-        })
-        .optional(),
+      code: z.enum([...AcademicSemesterCodes] as [string, ...string[]]),
       startMonth: z
         .enum([...AcademicSemesterMonth] as [string, ...string[]], {
           required_error: 'Start month is required',
