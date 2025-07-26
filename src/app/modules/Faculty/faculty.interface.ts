@@ -5,4 +5,9 @@ export type IFaculty = {
   title: string;
 };
 
+export type IFacultyFilters = {
+  searchTerm?: string;
+  title?: string;
+};
+
 export type IFacultyModel = Model<IFaculty, Record<string, unknown>>;
