@@ -1,12 +1,14 @@
-import { generatedUserId } from '../User/user.utils';
 import { IFaculty } from './faculty.interface';
 import { Faculty } from './faculty.model';
+import { generatedFacultyId } from './faculty.utils';
 
 //create faculty
 const createFaculty = async (faculty: IFaculty): Promise<IFaculty> => {
-  const id = await generatedUserId();
-  faculty.id = id;
-  const result = await Faculty.create(faculty);
+  const id = await generatedFacultyId();
+  const newFaculty: IFaculty = { ...faculty, id };
+  console.log('Creating faculty with ID:', newFaculty.id);
+
+  const result = await Faculty.create(newFaculty);
   return result;
 };
 
