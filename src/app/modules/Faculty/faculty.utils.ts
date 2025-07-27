@@ -1,7 +1,7 @@
-import { Faculty } from './faculty.model';
+import { AcademicFaculty } from './academicFaculty.model';
 
 export const findLastFacultyId = async () => {
-  const lastFaculty = await Faculty.findOne({}, { id: 1, _id: 0 })
+  const lastFaculty = await AcademicFaculty.findOne({}, { id: 1, _id: 0 })
     .sort({ createdAt: -1 })
     .lean();
   return lastFaculty?.id;

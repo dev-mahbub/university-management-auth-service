@@ -1,33 +1,40 @@
 import { SortOrder } from 'mongoose';
 import { paginationHelpers } from '../../../helpers/paginationHelpers';
 import { IPaginationOptions } from '../../../interfaces/pagination';
-import { facultySearchableFields } from './faculty.constants';
-import { IFaculty, IFacultyFilters } from './faculty.interface';
-import { Faculty } from './faculty.model';
 import { generatedFacultyId } from './faculty.utils';
+import {
+  IAcademicFaculty,
+  IAcademicFacultyFilters,
+} from './academicFaculty.interface';
+import { academicFacultySearchableFields } from './academicFaculty.constants';
+import { AcademicFaculty } from './academicFaculty.model';
 
 //create faculty
-const createFaculty = async (faculty: IFaculty): Promise<IFaculty> => {
+const createFaculty = async (
+  faculty: IAcademicFaculty,
+): Promise<IAcademicFaculty> => {
   const id = await generatedFacultyId();
-  const newFaculty: IFaculty = { ...faculty, id };
+  const newFaculty: IAcademicFaculty = { ...faculty, id };
   console.log('Creating faculty with ID:', newFaculty.id);
 
-  const result = await Faculty.create(newFaculty);
+  const result = await AcademicFaculty.create(newFaculty);
   return result;
 };
 
 //read single faculty
-const getSingleFaculty = async (id: string): Promise<IFaculty | null> => {
-  const result = await Faculty.findById(id);
+const getSingleFaculty = async (
+  id: string,
+): Promise<IAcademicFaculty | null> => {
+  const result = await AcademicFaculty.findById(id);
   return result;
 };
 
 //update faculty
 const updateFaculty = async (
   id: string,
-  payload: Partial<IFaculty>,
-): Promise<IFaculty | null> => {
-  const result = await Faculty.findByIdAndUpdate({ _id: id }, payload, {
+  payload: Partial<IAcademicFaculty>,
+): Promise<IAcademicFaculty | null> => {
+  const result = await AcademicFaculty.findByIdAndUpdate({ _id: id }, payload, {
     new: true,
   });
   return result;
@@ -35,7 +42,7 @@ const updateFaculty = async (
 
 //read all faculty
 const getAllFaculty = async (
-  filters: IFacultyFilters,
+  filters: IAcademicFacultyFilters,
   paginationOptions: IPaginationOptions,
 ) => {
   const { searchTerm, ...filterData } = filters;
@@ -45,7 +52,7 @@ const getAllFaculty = async (
   //partial search
   if (searchTerm) {
     andConditions.push({
-      $or: facultySearchableFields.map(field => ({
+      $or: academicFacultySearchableFields.map(field => ({
         [field]: {
           $regex: searchTerm,
           $opions: 'i',
@@ -76,12 +83,12 @@ const getAllFaculty = async (
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
 
-  const result = await Faculty.find(whereConditions)
+  const result = await AcademicFaculty.find(whereConditions)
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);
 
-  const total = await Faculty.countDocuments();
+  const total = await AcademicFaculty.countDocuments();
 
   return {
     meta: {
@@ -94,12 +101,12 @@ const getAllFaculty = async (
 };
 
 //delete faculty
-const deleteFaculty = async (id: string): Promise<IFaculty | null> => {
-  const result = await Faculty.findByIdAndDelete(id);
+const deleteFaculty = async (id: string): Promise<IAcademicFaculty | null> => {
+  const result = await AcademicFaculty.findByIdAndDelete(id);
   return result;
 };
 
-export const FacultyService = {
+export const AcademicFacultyService = {
   createFaculty,
   getSingleFaculty,
   getAllFaculty,
