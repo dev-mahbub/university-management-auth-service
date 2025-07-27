@@ -32,6 +32,20 @@ const getSingleFaculty = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+//update faculty
+const updateFaculty = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const payload = req.body;
+  const result = await FacultyService.updateFaculty(id, payload);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Faculty updated successfully',
+    data: result,
+  });
+});
+
 //read all faculty
 const getAllFaculty = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, facultyFilteratbleFields);
@@ -51,4 +65,5 @@ export const FacultyController = {
   createFaculty,
   getSingleFaculty,
   getAllFaculty,
+  updateFaculty,
 };

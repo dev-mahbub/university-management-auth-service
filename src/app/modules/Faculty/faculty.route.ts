@@ -6,5 +6,6 @@ const router = express.Router();
 router.post('/create-faculty', FacultyController.createFaculty);
 router.get('/:id', FacultyController.getSingleFaculty);
 router.get('/', FacultyController.getAllFaculty);
+router.patch('/:id', FacultyController.updateFaculty);
 
 export const FacultyRoutes = router;

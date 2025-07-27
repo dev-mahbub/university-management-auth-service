@@ -22,6 +22,17 @@ const getSingleFaculty = async (id: string): Promise<IFaculty | null> => {
   return result;
 };
 
+//update faculty
+const updateFaculty = async (
+  id: string,
+  payload: Partial<IFaculty>,
+): Promise<IFaculty | null> => {
+  const result = await Faculty.findByIdAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return result;
+};
+
 //read all faculty
 const getAllFaculty = async (
   filters: IFacultyFilters,
@@ -86,4 +97,5 @@ export const FacultyService = {
   createFaculty,
   getSingleFaculty,
   getAllFaculty,
+  updateFaculty,
 };
