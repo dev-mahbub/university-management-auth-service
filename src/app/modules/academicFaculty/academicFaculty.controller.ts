@@ -6,42 +6,30 @@ import pick from '../../../shared/pick';
 import { paginationFields } from '../../../constants/paginations';
 import { AcademicFacultyService } from './academicFaculty.service';
 import { academicFacultyFilteratbleFields } from './academicFaculty.constants';
+import { IAcademicFaculty } from './academicFaculty.interface';
 
 const createFaculty = catchAsync(async (req: Request, res: Response) => {
-  const { ...facultyData } = req.body;
-  const result = await AcademicFacultyService.createFaculty(facultyData);
+  const { ...academicFacultyData } = req.body;
+  const result =
+    await AcademicFacultyService.createFaculty(academicFacultyData);
 
-  sendResponse(res, {
+  sendResponse<IAcademicFaculty>(res, {
     statusCode: status.OK,
     success: true,
-    message: 'Faculty created successfully !',
+    message: 'Academic Faculty created successfully !',
     data: result,
   });
 });
 
 //read single faculty
 const getSingleFaculty = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const { id } = req.params;
   const result = await AcademicFacultyService.getSingleFaculty(id);
 
-  sendResponse(res, {
+  sendResponse<IAcademicFaculty>(res, {
     statusCode: status.OK,
     success: true,
-    message: 'Semester retrive successfully !',
-    data: result,
-  });
-});
-
-//update faculty
-const updateFaculty = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const payload = req.body;
-  const result = await AcademicFacultyService.updateFaculty(id, payload);
-
-  sendResponse(res, {
-    statusCode: status.OK,
-    success: true,
-    message: 'Faculty updated successfully',
+    message: 'Academic Faculty retrive successfully !',
     data: result,
   });
 });
@@ -55,24 +43,38 @@ const getAllFaculty = catchAsync(async (req: Request, res: Response) => {
     paginationOptions,
   );
 
-  sendResponse(res, {
+  sendResponse<IAcademicFaculty[]>(res, {
     statusCode: status.OK,
     success: true,
-    message: 'Semester retrive successfully !',
+    message: 'Academic Faculty retrive successfully !',
     meta: result.meta,
     data: result.data,
   });
 });
 
-//delete faculty
-const deleteFaculty = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const result = await AcademicFacultyService.deleteFaculty(id);
+//update faculty
+const updateFaculty = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const updatedData = req.body;
+  const result = await AcademicFacultyService.updateFaculty(id, updatedData);
 
-  sendResponse(res, {
+  sendResponse<IAcademicFaculty>(res, {
     statusCode: status.OK,
     success: true,
-    message: 'Faculty deleted successfully !',
+    message: 'Academic Faculty updated successfully',
+    data: result,
+  });
+});
+
+//delete faculty
+const deleteFaculty = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await AcademicFacultyService.deleteFaculty(id);
+
+  sendResponse<IAcademicFaculty>(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Academic Faculty deleted successfully !',
     data: result,
   });
 });

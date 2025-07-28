@@ -7,21 +7,16 @@ import {
 } from './academicFaculty.interface';
 import { academicFacultySearchableFields } from './academicFaculty.constants';
 import { AcademicFaculty } from './academicFaculty.model';
-import { generatedFacultyId } from './academicFaculty.utils';
 
 //create faculty
 const createFaculty = async (
-  faculty: IAcademicFaculty,
+  payload: IAcademicFaculty,
 ): Promise<IAcademicFaculty> => {
-  const id = await generatedFacultyId();
-  const newFaculty: IAcademicFaculty = { ...faculty, id };
-  console.log('Creating faculty with ID:', newFaculty.id);
-
-  const result = await AcademicFaculty.create(newFaculty);
+  const result = await AcademicFaculty.create(payload);
   return result;
 };
 
-//read single faculty
+//get single faculty
 const getSingleFaculty = async (
   id: string,
 ): Promise<IAcademicFaculty | null> => {
@@ -29,23 +24,14 @@ const getSingleFaculty = async (
   return result;
 };
 
-//update faculty
-const updateFaculty = async (
-  id: string,
-  payload: Partial<IAcademicFaculty>,
-): Promise<IAcademicFaculty | null> => {
-  const result = await AcademicFaculty.findByIdAndUpdate({ _id: id }, payload, {
-    new: true,
-  });
-  return result;
-};
-
-//read all faculty
+//get all faculty
 const getAllFaculty = async (
   filters: IAcademicFacultyFilters,
   paginationOptions: IPaginationOptions,
 ) => {
-  const { searchTerm, ...filterData } = filters;
+  const { searchTerm, ...filtersData } = filters;
+  const { page, limit, skip, sortBy, sortOrder } =
+    paginationHelpers.calculatePagination(paginationOptions);
 
   const andConditions = [];
 
@@ -62,17 +48,15 @@ const getAllFaculty = async (
   }
 
   //exect match
-  if (Object.keys(filterData).length) {
+  if (Object.keys(filtersData).length) {
     andConditions.push({
-      $and: Object.entries(filterData).map(([field, value]) => ({
+      $and: Object.entries(filtersData).map(([field, value]) => ({
         [field]: value,
       })),
     });
   }
 
   //pagination
-  const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelpers.calculatePagination(paginationOptions);
 
   const sortConditions: { [key: string]: SortOrder } = {};
 
@@ -98,6 +82,17 @@ const getAllFaculty = async (
     },
     data: result,
   };
+};
+
+//update faculty
+const updateFaculty = async (
+  id: string,
+  payload: Partial<IAcademicFaculty>,
+): Promise<IAcademicFaculty | null> => {
+  const result = await AcademicFaculty.findByIdAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return result;
 };
 
 //delete faculty

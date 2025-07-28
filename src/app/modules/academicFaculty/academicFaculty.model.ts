@@ -6,11 +6,6 @@ import {
 
 const academicFacultySchema = new Schema<IAcademicFaculty>(
   {
-    id: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     title: {
       type: String,
       required: true,
