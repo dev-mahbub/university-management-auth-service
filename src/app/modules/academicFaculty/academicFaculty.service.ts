@@ -1,13 +1,13 @@
 import { SortOrder } from 'mongoose';
 import { paginationHelpers } from '../../../helpers/paginationHelpers';
 import { IPaginationOptions } from '../../../interfaces/pagination';
-import { generatedFacultyId } from './faculty.utils';
 import {
   IAcademicFaculty,
   IAcademicFacultyFilters,
 } from './academicFaculty.interface';
 import { academicFacultySearchableFields } from './academicFaculty.constants';
 import { AcademicFaculty } from './academicFaculty.model';
+import { generatedFacultyId } from './academicFaculty.utils';
 
 //create faculty
 const createFaculty = async (
