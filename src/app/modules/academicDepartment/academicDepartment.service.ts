@@ -81,6 +81,19 @@ const getAllDepartment = async (
   };
 };
 
+//update department
+const updateDepartment = async (
+  id: string,
+  payload: IAcademicDepartment,
+): Promise<IAcademicDepartment | null> => {
+  const result = await AcademicDepartment.findOneAndUpdate(
+    { _id: id },
+    payload,
+    { new: true },
+  );
+  return result;
+};
+
 //delete department
 const deleteDepartment = async (
   id: string,
@@ -93,5 +106,6 @@ export const AcademicDepartmentService = {
   createDepartment,
   getSingleDepartment,
   getAllDepartment,
+  updateDepartment,
   deleteDepartment,
 };

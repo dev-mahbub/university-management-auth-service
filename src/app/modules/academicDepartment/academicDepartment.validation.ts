@@ -6,7 +6,14 @@ const createDepartmentZodSchema = z.object({
     academicFaculty: z.string(),
   }),
 });
+const updateDepartmentZodSchema = z.object({
+  body: z.object({
+    title: z.string(),
+    academicFaculty: z.string(),
+  }),
+});
 
 export const AcademicDepartmentValidation = {
   createDepartmentZodSchema,
+  updateDepartmentZodSchema,
 };
