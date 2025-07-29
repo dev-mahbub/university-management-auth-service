@@ -10,4 +10,8 @@ router.post(
   AcademicDepartmentController.createDepartment,
 );
 
+router.get('/:id', AcademicDepartmentController.getSingleDepartment);
+router.get('/', AcademicDepartmentController.getAllDepartment);
+router.delete('/:id', AcademicDepartmentController.deleteDepartment);
+
 export const AcademicDepartmentRouter = router;

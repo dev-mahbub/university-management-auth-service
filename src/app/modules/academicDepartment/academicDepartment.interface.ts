@@ -5,6 +5,12 @@ export type IAcademicDepartment = {
   academicFaculty: string;
 };
 
+export type IAcademicDepartmentFilters = {
+  searchTerm?: string;
+  title?: string;
+  academicFaculty?: string;
+};
+
 export type IAcademicDepartmentModel = Model<
   IAcademicDepartment,
   Record<string, unknown>
