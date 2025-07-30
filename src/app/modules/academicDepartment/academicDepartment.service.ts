@@ -4,7 +4,7 @@ import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import {
   IAcademicDepartment,
-  IAcademicDepartmentFilters,
+  IAcademicDepartmentFilterRequest,
 } from './academicDepartment.interface';
 import { AcademicDepartment } from './academicDepartment.model';
 import { AcademicDepartmentSearchableFields } from './academicDepartment.constants';
@@ -13,7 +13,9 @@ import { AcademicDepartmentSearchableFields } from './academicDepartment.constan
 const createDepartment = async (
   payload: IAcademicDepartment,
 ): Promise<IAcademicDepartment | null> => {
-  const result = await AcademicDepartment.create(payload);
+  const result = (await AcademicDepartment.create(payload)).populate(
+    'academicFaculty',
+  );
   return result;
 };
 
@@ -21,13 +23,14 @@ const createDepartment = async (
 const getSingleDepartment = async (
   id: string,
 ): Promise<IAcademicDepartment | null> => {
-  const result = await AcademicDepartment.findById(id);
+  const result =
+    await AcademicDepartment.findById(id).populate('academicFaculty');
   return result;
 };
 
 //get all department
 const getAllDepartment = async (
-  filters: IAcademicDepartmentFilters,
+  filters: IAcademicDepartmentFilterRequest,
   paginationOptions: IPaginationOptions,
 ): Promise<IGenericResponse<IAcademicDepartment[]>> => {
   const { searchTerm, ...filtersData } = filters;
@@ -65,6 +68,7 @@ const getAllDepartment = async (
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
   const result = await AcademicDepartment.find(whereConditions)
+    .populate('academicFaculty')
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);
@@ -90,7 +94,7 @@ const updateDepartment = async (
     { _id: id },
     payload,
     { new: true },
-  );
+  ).populate('academicFaculty');
   return result;
 };
 

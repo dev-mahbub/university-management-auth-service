@@ -4,19 +4,28 @@ import {
   IAcademicDepartmentModel,
 } from './academicDepartment.interface';
 
-const academicDepartmentSchema = new Schema<IAcademicDepartment>({
-  title: {
-    type: String,
-    required: true,
-    unique: true,
+const AcademicDepartmentSchema = new Schema<IAcademicDepartment>(
+  {
+    title: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    academicFaculty: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicFaculty',
+      required: true,
+    },
   },
-  academicFaculty: {
-    type: String,
-    required: true,
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
   },
-});
+);
 
 export const AcademicDepartment = model<
   IAcademicDepartment,
   IAcademicDepartmentModel
->('AcademicDepartment', academicDepartmentSchema);
+>('AcademicDepartment', AcademicDepartmentSchema);
