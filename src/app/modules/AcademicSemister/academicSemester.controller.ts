@@ -46,7 +46,7 @@ const getAllSemesters = catchAsync(async (req: Request, res: Response) => {
     paginationOptions,
   );
 
-  sendResponse(res, {
+  sendResponse<IAcademicSemester[]>(res, {
     statusCode: status.OK,
     success: true,
     message: 'Semester retrieved Successfully',
