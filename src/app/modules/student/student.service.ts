@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SortOrder } from 'mongoose';
 import { paginationHelpers } from '../../../helpers/paginationHelpers';
 import { IGenericResponse } from '../../../interfaces/common';
@@ -5,6 +6,8 @@ import { IPaginationOptions } from '../../../interfaces/pagination';
 import { studentSearchableFields } from './student.constant';
 import { IStudent, IStudentFilters } from './student.interface';
 import { Student } from './student.model';
+import ApiError from '../../../errors/ApiError';
+import status from 'http-status';
 
 const getAllStudents = async (
   filters: IStudentFilters,
@@ -76,7 +79,39 @@ const updateStudent = async (
   id: string,
   payload: Partial<IStudent>,
 ): Promise<IStudent | null> => {
-  const result = await Student.findByIdAndUpdate({ _id: id }, payload, {
+  const isExist = await Student.findOne({ id });
+
+  if (!isExist) {
+    throw new ApiError(status.NOT_FOUND, 'Student not found');
+  }
+
+  const { name, guardian, localGuardian, ...studentData } = payload;
+  const updatedStudentData: Partial<IStudent> = { ...studentData };
+
+  if (name && Object.keys(name).length > 0) {
+    Object.keys(name).forEach(keys => {
+      const nameKay = `name.${keys}`;
+      (updatedStudentData as any)[nameKay] = name[keys as keyof typeof name];
+    });
+  }
+
+  if (guardian && Object.keys(guardian).length > 0) {
+    Object.keys(guardian).forEach(keys => {
+      const guardianKeys = `guardian.${keys}`;
+      (updatedStudentData as any)[guardianKeys] =
+        guardian[keys as keyof typeof guardian];
+    });
+  }
+
+  if (localGuardian && Object.keys(localGuardian).length > 0) {
+    Object.keys(localGuardian).forEach(keys => {
+      const localGuardianKeys = `localGuardian.${keys}`;
+      (updatedStudentData as any)[localGuardianKeys] =
+        localGuardian[keys as keyof typeof localGuardian];
+    });
+  }
+
+  const result = await Student.findOneAndUpdate({ id }, updatedStudentData, {
     new: true,
   });
   return result;
