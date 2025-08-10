@@ -4,14 +4,20 @@ import { UserValidation } from './user.validation';
 import validateRequest from '../../middlewares/validateRequest';
 const router = express.Router();
 
-//student route
+//student as user route
 router.post(
   '/create-student',
   validateRequest(UserValidation.createStudentOfUserZodSchema),
   UserController.createStudent,
 );
 
-//faculty route
+// delete student as user route
+router.delete('/student/:id', UserController.deleteStudent);
+
+// delete faculty as user route
+router.delete('/faculty/:id', UserController.deleteFaculty);
+
+//faculty as user route
 router.post(
   '/create-faculty',
   validateRequest(UserValidation.createFacultyOfUserZodSchema),

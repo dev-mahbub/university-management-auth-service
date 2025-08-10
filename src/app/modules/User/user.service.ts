@@ -81,6 +81,31 @@ const createStudent = async (
   return newUserAllData;
 };
 
+//delete student and user
+const deleteStudent = async (id: string) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    const user = await User.findOne({ id }).session(session);
+
+    if (!user) {
+      throw new ApiError(status.NOT_FOUND, 'Student user not found');
+    }
+
+    await Student.findByIdAndDelete(user.student, { session });
+    await User.findByIdAndDelete(user._id, { session });
+
+    session.commitTransaction();
+    session.endSession();
+  } catch (error) {
+    session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
+  }
+};
+
+//create faculty
 const createFaculty = async (
   faculty: IFaculty,
   user: IUser,
@@ -142,7 +167,33 @@ const createFaculty = async (
   return newUserAllData;
 };
 
+//delete faculty and user
+const deleteFaculty = async (id: string) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    const user = await User.findOne({ id }).session(session);
+
+    if (!user) {
+      throw new ApiError(status.NOT_FOUND, 'Faculty user not found');
+    }
+
+    await Faculty.findByIdAndDelete(user.faculty, { session });
+    await User.findByIdAndDelete(user._id, { session });
+
+    session.commitTransaction();
+    session.endSession();
+  } catch (error) {
+    session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
+  }
+};
+
 export const UserService = {
   createStudent,
+  deleteStudent,
   createFaculty,
+  deleteFaculty,
 };

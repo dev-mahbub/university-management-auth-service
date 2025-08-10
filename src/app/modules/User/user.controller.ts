@@ -16,6 +16,18 @@ const createStudent = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteStudent = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await UserService.deleteStudent(id);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Student deleted successfully',
+    data: result,
+  });
+});
+
 const createFaculty = catchAsync(async (req: Request, res: Response) => {
   const { faculty, ...userData } = req.body;
   const result = await UserService.createFaculty(faculty, userData);
@@ -28,7 +40,21 @@ const createFaculty = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteFaculty = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await UserService.deleteFaculty(id);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Faculty deleted successfully',
+    data: result,
+  });
+});
+
 export const UserController = {
   createStudent,
+  deleteStudent,
   createFaculty,
+  deleteFaculty,
 };
