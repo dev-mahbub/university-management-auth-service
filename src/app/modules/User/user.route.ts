@@ -14,15 +14,15 @@ router.post(
 // delete student as user route
 router.delete('/student/:id', UserController.deleteStudent);
 
-// delete faculty as user route
-router.delete('/faculty/:id', UserController.deleteFaculty);
-
 //faculty as user route
 router.post(
   '/create-faculty',
   validateRequest(UserValidation.createFacultyOfUserZodSchema),
   UserController.createFaculty,
 );
+
+// delete faculty as user route
+router.delete('/faculty/:id', UserController.deleteFaculty);
 
 //admin route
 router.post('/create-admin');
