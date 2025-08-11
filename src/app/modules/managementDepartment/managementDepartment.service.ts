@@ -8,21 +8,21 @@ import {
 } from './managementDepartment.interface';
 import { ManagementDepartment } from './managementDepartment.model';
 
-const createDepartment = async (
+const createManagementDepartment = async (
   departmentData: IManagementDepartment,
 ): Promise<IManagementDepartment | null> => {
   const result = await ManagementDepartment.create(departmentData);
   return result;
 };
 
-const getSingleDepartment = async (
+const getSingleManagementDepartment = async (
   id: string,
 ): Promise<IManagementDepartment | null> => {
   const result = await ManagementDepartment.findById(id);
   return result;
 };
 
-const getAllDepartment = async (
+const getAllManagementDepartment = async (
   filters: IDepartmentFilters,
   paginationOptions: IPaginationOptions,
 ) => {
@@ -63,7 +63,7 @@ const getAllDepartment = async (
     .skip(skip)
     .limit(limit);
 
-  const total = ManagementDepartment.countDocuments(whereConditions);
+  const total = await ManagementDepartment.countDocuments(whereConditions);
 
   return {
     meta: {
@@ -75,6 +75,19 @@ const getAllDepartment = async (
   };
 };
 
+const updateManagementDepartment = async (
+  id: string,
+  payload: Partial<IManagementDepartment>,
+): Promise<IManagementDepartment | null> => {
+  const result = await ManagementDepartment.findByIdAndUpdate(
+    { _id: id },
+    payload,
+    { new: true },
+  );
+
+  return result;
+};
+
 const deleteManagementDepartment = async (
   id: string,
 ): Promise<IManagementDepartment | null> => {
@@ -82,9 +95,10 @@ const deleteManagementDepartment = async (
   return result;
 };
 
-export const ManagementService = {
-  createDepartment,
-  getSingleDepartment,
-  getAllDepartment,
+export const ManagementDepartmentService = {
+  createManagementDepartment,
+  getSingleManagementDepartment,
+  getAllManagementDepartment,
+  updateManagementDepartment,
   deleteManagementDepartment,
 };
