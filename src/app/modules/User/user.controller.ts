@@ -52,9 +52,35 @@ const deleteFaculty = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const createAdmin = catchAsync(async (req: Request, res: Response) => {
+  const { admin, ...userData } = req.body;
+  const result = await UserService.createAdmin(admin, userData);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Admin created successfully',
+    data: result,
+  });
+});
+
+const deleteAdmin = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await UserService.deleteAdmin(id);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Admin deleted successfully',
+    data: result,
+  });
+});
+
 export const UserController = {
   createStudent,
   deleteStudent,
   createFaculty,
   deleteFaculty,
+  createAdmin,
+  deleteAdmin,
 };

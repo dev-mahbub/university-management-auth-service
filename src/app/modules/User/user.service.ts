@@ -1,6 +1,10 @@
 import { IUser } from './user.interface';
 import { User } from './user.model';
-import { generatedStudentId, genereatedFacultyId } from './user.utils';
+import {
+  generatedAdminId,
+  generatedStudentId,
+  genereatedFacultyId,
+} from './user.utils';
 import config from '../../../config';
 import ApiError from '../../../errors/ApiError';
 import status from 'http-status';
@@ -10,7 +14,10 @@ import mongoose from 'mongoose';
 import { Student } from '../student/student.model';
 import { IFaculty } from '../faculty/faculty.interface';
 import { Faculty } from '../faculty/faculty.model';
+import { IAdmin } from '../admin/admin.interface';
+import { Admin } from '../admin/admin.model';
 
+//create student and user
 const createStudent = async (
   student: IStudent,
   user: IUser,
@@ -105,7 +112,7 @@ const deleteStudent = async (id: string) => {
   }
 };
 
-//create faculty
+//create faculty and user
 const createFaculty = async (
   faculty: IFaculty,
   user: IUser,
@@ -191,9 +198,91 @@ const deleteFaculty = async (id: string) => {
   }
 };
 
+const createAdmin = async (
+  admin: IAdmin,
+  user: IUser,
+): Promise<IUser | null> => {
+  if (!user.password) {
+    user.password = config.default_admin_pass as string;
+  }
+
+  user.role = 'admin';
+
+  let newUserAllData = null;
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+    const id = await generatedAdminId();
+    admin.id = id;
+    user.id = id;
+
+    const newAdmin = await Admin.create([admin], { session });
+
+    if (!newAdmin.length) {
+      throw new ApiError(status.NOT_FOUND, 'Admin not found');
+    }
+
+    user.admin = newAdmin[0]._id;
+
+    const newUser = await User.create([user], { session });
+
+    if (!newUser.length) {
+      throw new ApiError(status.NOT_FOUND, 'User not found');
+    }
+
+    newUserAllData = newUser[0];
+
+    await session.commitTransaction();
+    session.endSession();
+  } catch (error) {
+    await session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
+  }
+
+  if (newUserAllData) {
+    newUserAllData = await User.findOne({ id: newUserAllData.id }).populate({
+      path: 'admin',
+      populate: [
+        {
+          path: 'managementDepartment',
+        },
+      ],
+    });
+  }
+  return newUserAllData;
+};
+
+const deleteAdmin = async (id: string) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+
+    const user = await User.findOne({ id }).session(session);
+    if (!user) {
+      throw new ApiError(status.NOT_FOUND, 'User not found');
+    }
+
+    await Admin.findByIdAndDelete(user.admin, { session });
+    await User.findByIdAndDelete(user._id, { session });
+
+    await session.commitTransaction();
+    session.endSession();
+  } catch (error) {
+    await session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
+  }
+};
+
 export const UserService = {
   createStudent,
   deleteStudent,
   createFaculty,
   deleteFaculty,
+  createAdmin,
+  deleteAdmin,
 };

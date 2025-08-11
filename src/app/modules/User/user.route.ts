@@ -25,6 +25,9 @@ router.post(
 router.delete('/faculty/:id', UserController.deleteFaculty);
 
 //admin route
-router.post('/create-admin');
+router.post('/create-admin', UserController.createAdmin);
+
+// delete admin as user route
+router.delete('/admin/:id', UserController.deleteAdmin);
 
 export const UserRoutes = router;
