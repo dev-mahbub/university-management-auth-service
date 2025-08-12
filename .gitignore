@@ -8,5 +8,5 @@ logs/winston/errors/*
 # But allow .gitkeep to be committed
 !logs/winston/successes/.gitkeep
 !logs/winston/errors/.gitkeep
-.vercel
+vercel
 /dist
