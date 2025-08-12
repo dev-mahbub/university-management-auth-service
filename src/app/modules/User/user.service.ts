@@ -9,7 +9,7 @@ import config from '../../../config';
 import ApiError from '../../../errors/ApiError';
 import status from 'http-status';
 import { IStudent } from '../student/student.interface';
-import { AcademicSemester } from '../academicSemister/academicSemester.model';
+import { AcademicSemester } from '../academicSemester/academicSemester.model';
 import mongoose from 'mongoose';
 import { Student } from '../student/student.model';
 import { IFaculty } from '../faculty/faculty.interface';
